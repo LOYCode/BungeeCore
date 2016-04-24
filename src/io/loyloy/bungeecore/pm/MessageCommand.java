@@ -3,7 +3,6 @@ package io.loyloy.bungeecore.pm;
 import io.loyloy.bungeecore.BungeeCore;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
@@ -29,7 +28,7 @@ public class MessageCommand extends Command
 
         if( args.length < 2 )
         {
-            sender.sendMessage( BungeeCore.getPfx().append( "Send a pm with /pm <name> <message>" ).color( ChatColor.RED ).create() );
+            sender.sendMessage( BungeeCore.getPfx().append( "Send a pm with /pm <name> <message>" ).color( ChatColor.GREEN ).create() );
             return;
         }
 
@@ -51,23 +50,19 @@ public class MessageCommand extends Command
             return;
         }
 
+        if( receiver.getUniqueId().equals( sender.getUniqueId() ) )
+        {
+            sender.sendMessage( BungeeCore.getPfx().append( "You don't need to pm yourself!" ).color( ChatColor.RED ).create() );
+            return;
+        }
+
         String content = "";
         for( int i=1 ; i < args.length ; i++ )
         {
             content += args[i] + " ";
         }
 
-        sender.sendMessage( new ComponentBuilder( "You" ).color( ChatColor.WHITE )
-                .append( " >> " ).color( ChatColor.YELLOW )
-                .append( receiver.getDisplayName() ).color( ChatColor.WHITE )
-                .append( " " + content ).color( ChatColor.YELLOW )
-                .create() );
-
-        receiver.sendMessage( new ComponentBuilder( sender.getDisplayName() ).color( ChatColor.WHITE )
-                .append( " >> " ).color( ChatColor.YELLOW )
-                .append( "You" ).color( ChatColor.WHITE )
-                .append( " " + content ).color( ChatColor.YELLOW )
-                .create() );
+        messMan.send( content, sender, receiver );
 
         messMan.updateTakler( sender.getUniqueId(), receiver.getUniqueId() );
         messMan.updateTakler( receiver.getUniqueId(), sender.getUniqueId() );

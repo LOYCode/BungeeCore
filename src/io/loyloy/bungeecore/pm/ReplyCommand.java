@@ -3,22 +3,17 @@ package io.loyloy.bungeecore.pm;
 import io.loyloy.bungeecore.BungeeCore;
 import net.md_5.bungee.api.ChatColor;
 import net.md_5.bungee.api.CommandSender;
-import net.md_5.bungee.api.chat.ComponentBuilder;
 import net.md_5.bungee.api.connection.ProxiedPlayer;
 import net.md_5.bungee.api.plugin.Command;
 
-import java.util.UUID;
-
 public class ReplyCommand extends Command
 {
-    private BungeeCore plugin;
     private MessageManager messMan;
 
-    public ReplyCommand( BungeeCore plugin, MessageManager messMan )
+    public ReplyCommand( MessageManager messMan )
     {
         super( "reply", null, "r" );
 
-        this.plugin = plugin;
         this.messMan = messMan;
     }
 
@@ -29,7 +24,7 @@ public class ReplyCommand extends Command
 
         if( args.length < 1 )
         {
-            sender.sendMessage( BungeeCore.getPfx().append( "Reply with /r <message>" ).color( ChatColor.RED ).create() );
+            sender.sendMessage( BungeeCore.getPfx().append( "Reply with /r <message>" ).color( ChatColor.GREEN ).create() );
             return;
         }
 
@@ -39,12 +34,17 @@ public class ReplyCommand extends Command
             return;
         }
 
-        UUID receiverUUID = messMan.getReceiver( sender.getUniqueId() );
-        ProxiedPlayer receiver = plugin.getProxy().getPlayer( receiverUUID );
+        ProxiedPlayer receiver = messMan.getReceiver( sender.getUniqueId() );
 
         if( receiver == null )
         {
             sender.sendMessage( BungeeCore.getPfx().append( "That player is not online anymore :(" ).color( ChatColor.RED ).create() );
+            return;
+        }
+
+        if( receiver.getUniqueId().equals( sender.getUniqueId() ) )
+        {
+            sender.sendMessage( BungeeCore.getPfx().append( "You don't need to pm yourself!" ).color( ChatColor.RED ).create() );
             return;
         }
 
@@ -54,17 +54,7 @@ public class ReplyCommand extends Command
             content += args[i] + " ";
         }
 
-        sender.sendMessage( new ComponentBuilder( "You" ).color( ChatColor.WHITE )
-                .append( " >> " ).color( ChatColor.YELLOW )
-                .append( receiver.getDisplayName() ).color( ChatColor.WHITE )
-                .append( " " + content ).color( ChatColor.YELLOW )
-                .create() );
-
-        receiver.sendMessage( new ComponentBuilder( sender.getDisplayName() ).color( ChatColor.WHITE )
-                .append( " >> " ).color( ChatColor.YELLOW )
-                .append( "You" ).color( ChatColor.WHITE )
-                .append( " " + content ).color( ChatColor.YELLOW )
-                .create() );
+        messMan.send( content, sender, receiver );
 
         messMan.updateTakler( receiver.getUniqueId(), sender.getUniqueId() );
     }
