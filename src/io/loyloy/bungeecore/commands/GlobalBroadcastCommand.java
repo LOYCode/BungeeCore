@@ -33,12 +33,12 @@ public class GlobalBroadcastCommand extends Command
         }
         content = ChatColor.translateAlternateColorCodes( '&', content );
 
-        String finalBroadcast = "";
-        finalBroadcast += ChatColor.DARK_RED + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------";
-        finalBroadcast += ChatColor.WHITE + "Announcement: " + ChatColor.RED + content + "-" + commandSender.getName();
-        finalBroadcast += ChatColor.DARK_RED + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------";
+        String fB1 = ChatColor.DARK_RED + "" + ChatColor.STRIKETHROUGH + "---------------------------------------------------";
+        String fB2 = ChatColor.RED + "Announcement: " + ChatColor.WHITE + content + ChatColor.RED + "-" + commandSender.getName();
 
-        plugin.getProxy().broadcast( new TextComponent( finalBroadcast ) );
+        plugin.getProxy().broadcast( new TextComponent( fB1 ) );
+        plugin.getProxy().broadcast( new TextComponent( fB2 ) );
+        plugin.getProxy().broadcast( new TextComponent( fB1 ) );
 
         int playerCount = plugin.getProxy().getOnlineCount();
         int serverCount = plugin.getProxy().getServers().size();
