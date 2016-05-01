@@ -1,6 +1,7 @@
 package io.loyloy.bungeecore;
 
 import io.loyloy.bungeecore.commands.GlobalBroadcastCommand;
+import io.loyloy.bungeecore.commands.HubCommand;
 import io.loyloy.bungeecore.pm.MessageCommand;
 import io.loyloy.bungeecore.pm.MessageManager;
 import io.loyloy.bungeecore.pm.ReplyCommand;
@@ -20,7 +21,9 @@ public class BungeeCore extends Plugin
 
         //Misc
         pluginManager.registerListener( this, new BungeeListener() );
+
         pluginManager.registerCommand( this, new GlobalBroadcastCommand( this ) );
+        pluginManager.registerCommand( this, new HubCommand() );
 
         //Private Messaging
         MessageManager messMan =  new MessageManager( this );
