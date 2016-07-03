@@ -26,9 +26,9 @@ public class BungeeCore extends Plugin
         pluginManager.registerCommand( this, new HubCommand() );
 
         //Private Messaging
-        MessageManager messMan =  new MessageManager( this );
-        pluginManager.registerCommand( this, new MessageCommand( this, messMan ) );
-        pluginManager.registerCommand( this, new ReplyCommand( messMan ) );
+        //MessageManager messMan =  new MessageManager( this );
+        //pluginManager.registerCommand( this, new MessageCommand( this, messMan ) );
+        //pluginManager.registerCommand( this, new ReplyCommand( messMan ) );
     }
 
     public static ComponentBuilder getPfx()
